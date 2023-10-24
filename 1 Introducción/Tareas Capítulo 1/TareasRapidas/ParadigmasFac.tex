@@ -1,0 +1,112 @@
+ \noindent El cálculo del factorial (n!) es un problema clásico que se puede abordar desde varios paradigmas de programación. Aquí te presento cinco ejemplos, cada uno representando un paradigma diferente:
+
+\noindent 1.Paradigma Imperativo (Procedural)
+   En este enfoque, se utiliza un bucle para iterar desde 1 hasta n multiplicando los números.
+
+   python
+   \begin{verbatim}
+       def factorial_iterativo(n):
+           resultado = 1
+           for i in range(1, n + 1):
+               resultado *= i
+           return resultado
+  \end{verbatim}
+
+\noindent 2.Paradigma Funcional:
+   En programación funcional, se pueden usar funciones recursivas para expresar el cálculo factorial.
+
+   python
+   \begin{verbatim}
+       def factorial_recursivo(n):
+           return 1 if n == 0 else n * factorial_recursivo(n - 1)
+   \end{verbatim}
+
+\noindent 3.Paradigma Orientado a Objetos:
+   Puedes encapsular el cálculo del factorial dentro de una clase.
+
+   python
+   \begin{verbatim}
+       class Factorial:
+           @staticmethod
+           def calcular_factorial(n):
+               return 1 if n == 0 else n * Factorial.calcular_factorial(n - 1)
+   \end{verbatim}
+
+\noindent 4.Programación Declarativa:
+   Enfoque en declarar qué se quiere lograr en lugar de cómo hacerlo. En Python, puedes usar la función `reduce` de la biblioteca `functools`.
+
+   python
+   \begin{verbatim}
+       from functools import reduce
+    
+       def factorial_declarativo(n):
+           return reduce(lambda x, y: x * y, range(1, n + 1), 1)
+   \end{verbatim}
+
+\noindent 5. Programación Lógica:
+   Usando lógica y reglas de inferencia, se puede expresar el cálculo del factorial en lenguajes de programación lógica como Prolog.
+
+   prolog
+   \begin{verbatim}
+       factorial(0, 1).
+       factorial(N, F) :- N > 0, N1 is N - 1, factorial(N1, F1), F is N * F1.
+   \end{verbatim}
+
+\noindent 6. Programación Concurrente:
+   Utilizando hilos o procesos concurrentes para calcular partes del factorial de manera simultánea.
+
+   python
+   \begin{verbatim}
+       from concurrent.futures import ThreadPoolExecutor
+    
+       def calcular_factorial_concurrente(n):
+           def parcial_factorial(i):
+               resultado_parcial = 1
+               for j in range(1, i + 1):
+                   resultado_parcial *= j
+               return resultado_parcial
+    
+           with ThreadPoolExecutor() as executor:
+               resultados_parciales = list(executor.map(parcial_factorial, range(1, n + 1)))
+    
+           return functools.reduce(lambda x, y: x * y, resultados_parciales, 1)
+   \end{verbatim}
+
+\noindent 7. Programación Reactiva:
+   Utilizando un enfoque reactivo donde se observan eventos y se actualiza el resultado del factorial en consecuencia.
+
+   python
+   \begin{verbatim}
+       from rx import Observable
+    
+       def calcular_factorial_reactivo(n):
+           return Observable.range(1, n).scan(lambda acc, x: acc * x).last()
+   \end{verbatim}
+
+\noindent 8. Programación Basada en Reglas:
+   Utilizando un sistema basado en reglas donde se definen reglas para inferir el resultado del factorial.
+
+   python
+   \begin{verbatim}
+       from pyknow import KnowledgeEngine
+    
+       class FactorialEngine(KnowledgeEngine):
+           @Rule()
+           def base_case(self):
+               self.declare(Fact(n=0, factorial=1))
+    
+           @Rule(Fact(n=MATCH.n), NOT(Fact(factorial=W())))
+           def calcular_factorial(self, n):
+               self.declare(Fact(n=n, factorial=n * self.factorial(n - 1)))
+    
+       def calcular_factorial_reglas(n):
+           engine = FactorialEngine()
+           engine.reset()
+           engine.declare(Fact(n=n))
+           engine.run()
+           return engine.facts[-1].factorial
+   \end{verbatim}
+
+\noindent9. Programación Cuántica:
+   Solo como curiosidad, podrías explorar implementaciones cuánticas de algoritmos, como el algoritmo cuántico de Shor para factorización.
+

@@ -1,0 +1,67 @@
+%---------------------------------------------
+%                Ejercicio 1
+%---------------------------------------------
+
+\noindent \textbf{Ejercicio 1:} Demostrar que
+
+\begin{equation*}
+    \binom{n}{k} = \binom{n}{n-k}
+\end{equation*}
+
+\noindent \textbf{Solución: } Recordemos que
+
+\begin{equation}
+    \binom{n}{k} = \frac{n!}{(n-k)! k!}
+    \label{C1: Tarea Binomio de Newton 1}
+\end{equation}
+
+\noindent por otro lado
+
+\begin{equation}
+    \begin{split}
+        \binom{n}{n-k} & = \frac{n!}{(n-(n-k))! (n-k)!} \\
+        & = \frac{n!}{k!(n-k)!}
+    \end{split}
+    \label{C1: Tarea Binomio de Newton 2}
+\end{equation}
+
+\noindent Por lo tanto, por (\ref{C1: Tarea Binomio de Newton 1}) y (\ref{C1: Tarea Binomio de Newton 2}):
+
+\begin{equation}
+    \binom{n}{k} = \binom{n}{n-k}
+\end{equation}
+
+%---------------------------------------------
+%                Ejercicio 2
+%---------------------------------------------
+
+\noindent \textbf{Ejercicio 2:} Demostrar que
+
+\begin{itemize}
+    \item [a) ]
+    \begin{equation*}
+        \binom{n}{0} = 1
+    \end{equation*}
+
+    \item[b) ] 
+    \begin{equation*}
+        \binom{0}{k} = 0
+    \end{equation*}
+\end{itemize}
+
+\noindent \textbf{Solución: } 
+
+\begin{itemize}
+    \item [a) ]
+
+    \begin{equation*}
+        \begin{split}
+            \binom{n}{0} & = \frac{n!}{(n)! 0!} \\
+            & = \frac{n!}{n!(1)} \\
+            & = 1
+        \end{split}
+    \end{equation*}
+
+    \item [b) ] La expresión $\binom{n}{k}$ se define como el número de formas en que se pueden elegir $k$ elementos de un conjunto de $n$ elementos, pero si $n=0$, no hay elementos en el conjunto, por lo tanto, $\binom{0}{k}$ debe ser igual a cero.
+\end{itemize}
+

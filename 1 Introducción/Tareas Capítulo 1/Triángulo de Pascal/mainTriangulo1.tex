@@ -1,0 +1,120 @@
+%Created by Senan Sekhon
+%Created July 18, 2022
+
+%The code below is used to define commands with different results depending on whether or not the optional argument is used. From https://tex.stackexchange.com/questions/308/different-command-definitions-with-and-without-optional-argument
+\makeatletter
+\def\ifemptyarg#1{%
+  \if\relax\detokenize{#1}\relax % H. Oberdiek
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+\makeatother
+
+\newcommand{\soball}[2][]{\ifemptyarg{#1}
+{\shade[ball color=#2] (0,0) circle (0.5);} %solid ball with no label
+{\shade[ball color=#2] (0,0) circle (0.5);
+\begin{scope}
+\clip (0,0) circle (0.25);
+\shade[ball color=white] (0,0) circle (0.5);
+\end{scope}
+\node[font=\sffamily\bfseries\selectfont] at (0,0) {#1};} %solid ball with label
+}
+
+\newcommand{\stball}[2][]{\ifemptyarg{#1}
+{\shade[ball color=white] (0,0) circle (0.5);
+\clip (-0.5,-0.35) rectangle (0.5,0.35);
+\shade[ball color=#2] (0,0) circle (0.5);} %striped ball with no label
+{\shade[ball color=white] (0,0) circle (0.5);
+\clip (-0.5,-0.35) rectangle (0.5,0.35);
+\shade[ball color=#2] (0,0) circle (0.5);
+\begin{scope}
+\clip (0,0) circle (0.25);
+\shade[ball color=white] (0,0) circle (0.5);
+\end{scope}
+\node[font=\sffamily\bfseries\selectfont] at (0,0) {#1};} %striped ball with label
+}
+
+\newcommand{\cue}[3]{%Template for pool cue
+\def\cl{#1} %Length of cue
+\def\tr{#2} %Half-width of tip of cue
+\def\br{#3} %Half-width of base of cue
+\shade[bottom color=white,top color=black!40] (0,\tr)--(\cl,\br)--(\cl,-\br)--(0,-\tr)--cycle;
+\shade[left color=Sepia!20,right color=Sepia] (\cl,\br) arc(15:-15:{(2+sqrt(3))*\br})--(\cl,-\br)--({2*\cl/3},{-(\tr+2*\br)/3})--({5*\cl/6},{-(\tr+5*\br)/12})--({2*\cl/3},0)--({5*\cl/6},{(\tr+5*\br)/12})--({2*\cl/3},{(\tr+2*\br)/3})--cycle;
+\fill[gray!10] (0,\tr)--({\cl/12},{(11*\tr+\br)/12}) arc(15:-15:{(2+sqrt(3))*(11*\tr+\br)/12})--({\cl/12},{-(11*\tr+\br)/12})--(0,-\tr)--cycle;
+\shade[ball color=Cerulean!50] (0,0) ellipse (2*\tr/5 and \tr);
+}
+
+%Defining the color of the pool table cloth
+\definecolor{cloth}{HTML}{FFFFFF}
+
+\pagecolor{cloth}
+
+\null\vspace{0pt} %Top padding
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+\pgfmathtruncatemacro{\N}{16} %Number of rows of Pascal's triangle to generate (excluding the zeroth row {1})
+\foreach \n in {0,...,\N}
+\foreach \k in {0,...,\n}
+{\pgfmathtruncatemacro{\binomial}{\xinteval{binomial(\n,\k)}} %Computing the binomial coefficient nCk
+
+%Setting the ball color based on the remainder of nCk modulo 8 (these colors resemble those used in standard pool)
+\pgfmathtruncatemacro{\modeight}{\xinteval{\binomial/:8}} %Remainder of \binomial on division by 8
+\ifnum \modeight=0 \colorlet{ballcol}{black} \fi
+\ifnum \modeight=1 \colorlet{ballcol}{yellow} \fi
+\ifnum \modeight=2 \colorlet{ballcol}{blue} \fi
+\ifnum \modeight=3 \colorlet{ballcol}{red} \fi
+\ifnum \modeight=4 \colorlet{ballcol}{violet} \fi
+\ifnum \modeight=5 \colorlet{ballcol}{orange} \fi
+\ifnum \modeight=6 \colorlet{ballcol}{OliveGreen} \fi
+\ifnum \modeight=7 \colorlet{ballcol}{Maroon} \fi
+
+%Setting the size of the binomial coefficients to be printed
+\ifnum \binomial<100
+    \pgfmathsetmacro{\scale}{1} %If nCk<100, print it normally
+\else
+    \ifnum \binomial<1000
+        \pgfmathsetmacro{\scale}{0.8} %If 100≤nCk<1000, scale it by 0.8
+    \else
+        \ifnum \binomial<10000
+            \pgfmathsetmacro{\scale}{0.6} %If 1000≤nCk<10000, scale it by 0.6
+        \else
+            \pgfmathsetmacro{\scale}{0.5} %If nCk≥10000, scale it by 0.4
+        \fi
+    \fi
+\fi
+
+\begin{scope}[shift={({\k-\n/2},{-1/2*sqrt(3)*\n})}]
+\ifodd \xinteval{\binomial//8} %Floor of \binomial/8
+    \soball[\scalebox{\scale}{\binomial}]{ballcol}
+\else
+    \stball[\scalebox{\scale}{\binomial}]{ballcol}
+\fi
+\end{scope}
+}
+
+%%% Triangle around all the balls
+\pgfmathsetmacro{\w}{0.4} %Width of triangle
+\fill[Brown!90!black,even odd rule,rounded corners=5mm]
+    (0,{1+\w})--({-(1+\w)*sqrt(3)/2-\N/2},{-(1+\w)/2-\N*sqrt(3)/2})--({(1+\w)*sqrt(3)/2+\N/2},{-(1+\w)/2-\N*sqrt(3)/2})--cycle %Outer border of triangle
+    (0,1)--({-sqrt(3)/2-\N/2},{-1/2-\N*sqrt(3)/2})--({sqrt(3)/2+\N/2},{-1/2-\N*sqrt(3)/2})--cycle; %Inner border of triangle
+
+\begin{scope}[shift={(-7,2)}] %Pool cue Title Label
+\pgfmathsetmacro{\cl}{14} %Length of cue
+\pgfmathsetmacro{\tr}{0.2} %Half-width of tip of cue
+\pgfmathsetmacro{\br}{0.3} %Half-width of base of cue
+
+\shade[bottom color=white,top color=black!40] (0,\tr)--(\cl,\br)--(\cl,-\br)--(0,-\tr)--cycle; %Shading the body of the cue
+\shade[left color=Sepia!20,right color=Sepia] (\cl,\br) arc(15:-15:{(2+sqrt(3))*\br})--(\cl,-\br)--({2*\cl/3},{-(\tr+2*\br)/3})--({5*\cl/6},{-(\tr+5*\br)/12})--({2*\cl/3},0)--({5*\cl/6},{(\tr+5*\br)/12})--({2*\cl/3},{(\tr+2*\br)/3})--cycle;
+\fill[gray!10] (0,\tr)--({\cl/12},{(11*\tr+\br)/12}) arc(15:-15:{(2+sqrt(3))*(11*\tr+\br)/12})--({\cl/12},{-(11*\tr+\br)/12})--(0,-\tr)--cycle; %Shading the jagged finish at base of cue
+\shade[ball color=Cerulean!50] (0,0) ellipse (2*\tr/5 and \tr); %Shading tip of cue
+\node[xshift=-2mm,font=\sffamily\bfseries] at (\cl/2,0) {PASCAL'S POOL TRIANGLE};
+\end{scope}
+
+\end{tikzpicture}
+\end{center}
+
+%\begin{center}
+%\huge\sffamily\bfseries\color{gray!20} Designed in {\normalfont\LaTeX} and {\normalfont Ti\textit{k}Z} by Senan Sekhon
+%\end{center}

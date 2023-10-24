@@ -1,0 +1,50 @@
+\noindent La Congruencia de Zeller es una fórmula matemática que se utiliza para calcular el día de la semana correspondiente a una fecha específica. Esta fórmula fue desarrollada por Christian Zeller en el siglo XIX. La fórmula toma en cuenta el día, el mes y el año de la fecha y devuelve un número que representa el día de la semana, donde 0 representa el sábado, 1 el domingo, 2 el lunes, y así sucesivamente.
+
+\noindent La fórmula de congruencia de Zeller se define de la siguiente manera:
+
+\begin{equation*}
+	h = (q + 13*(m+1)/5 + K + K/4 + J/4 + 5*J) \; mod \; 7
+\end{equation*}
+
+
+\noindent Donde:
+
+\begin{itemize}
+	\item h es el día de la semana (0 = sábado, 1 = domingo, 2 = lunes, ..., 6 = viernes).
+	
+	\item q es el día del mes.
+	
+	\item m es el mes (3 = marzo, 4 = abril, ..., 12 = diciembre, enero y febrero se cuentan como 13 y 14 del año anterior).
+	
+	\item K es el año del siglo (el año sin los dos dígitos finales).
+	
+	\item J es el siglo (los dos primeros dígitos del año).
+\end{itemize}
+
+\begin{lstlisting}
+	def zeller_congruence(day, month, year):
+		# Ajuste del mes y el año para la fórmula de Zeller
+		if month in (1, 2):
+			month += 12
+			year -= 1
+	
+		# Aplicación de la fórmula de Zeller
+		K = year % 100
+		J = year // 100
+		day_of_week = (day + 13 * (month + 1) // 5 + K + K // 4 + J // 4 - 2 * J) % 7
+	
+		# Días de la semana
+		days = ["Sábado", "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+	
+		return days[day_of_week]
+	
+	# Ingresa la fecha en formato DD, MM, YYYY
+	day = int(input("Ingresa el día (1-31): "))
+	month = int(input("Ingresa el mes (1-12): "))
+	year = int(input("Ingresa el año (YYYY): "))
+	
+	day_of_week = zeller_congruence(day, month, year)
+	print(f"El día de la semana es: {day_of_week}")
+	
+	
+\end{lstlisting}

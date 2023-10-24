@@ -1,0 +1,35 @@
+\begin{center} 
+    \newdimen\R
+    \R=.4cm
+    \def\lim{12} %largo
+    \newcommand\mycolor{white}
+    \newcommand\thik{\pgflinewidth}
+    \begin{tikzpicture}[line width=.2pt]
+        \foreach \k in {0,...,\lim}{
+        \begin{scope}[shift={(-60:{sqrt(3)*\R*\k})}]
+            \pgfmathtruncatemacro\ystart{\lim-\k}
+            \foreach \n in {0,...,\ystart}{
+            \pgfmathtruncatemacro\newn{\n+\k}
+            %binomila ceeficients
+            \pgfmathsetmacro{\value}{1};
+            \ifthenelse{\k>0}{
+            \foreach \b in {1,...,\k}{
+            \pgfmathtruncatemacro{\value}{\value*(\newn-\b+1)/\b)};
+            \global\let\value=\value
+            }
+            }{};
+            \def\res{3}
+            \pgfmathtruncatemacro{\rest}{mod(\value,\res)};
+            \ifthenelse{\rest=0}{\def\mycolor{green}}{}
+            
+            \begin{scope}[shift={(-120:{sqrt(3)*\R*\n})}]
+                \draw[top color=\mycolor!20,bottom color=\mycolor!60] 
+                (30:\R) \foreach \x in {90,150,...,330} {
+                -- (\x:\R)}
+                --cycle (90:0) node {\tiny $\mathbf{\value}$};
+            \end{scope}
+            }
+        \end{scope}
+        }
+    \end{tikzpicture}
+\end{center}

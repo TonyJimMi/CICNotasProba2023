@@ -1,0 +1,26 @@
+
+\noindent La recursión es un concepto en programación y matemáticas que implica la definición o descripción de algo en términos de sí mismo. En otras palabras, un problema recursivo puede dividirse en subproblemas más pequeños del mismo tipo. Un procedimiento o función recursiva es aquella que se llama a sí misma para resolver instancias más pequeñas del mismo problema. \\
+
+\noindent La idea fundamental de la recursión es dividir un problema en casos más pequeños y más manejables hasta llegar a un caso base, que es un problema lo suficientemente simple como para resolverse directamente. La solución a los problemas más pequeños se combina de alguna manera para obtener la solución al problema original. \\
+
+\noindent  Ejemplo simple de una función recursiva en programación (usando Python):\\
+
+\begin{verbatim}
+    def factorial(n):
+        # Caso base
+        if n == 0 or n == 1:
+            return 1
+        else:
+            # Llamada recursiva
+            return n * factorial(n - 1)
+    
+    # Ejemplo de uso
+    result = factorial(5)
+    print(result)  # Salida: 120
+
+\end{verbatim}
+
+\noindent En este ejemplo, la función factorial se define en términos de sí misma. El caso base es cuando n es 0 o 1, en cuyo caso la función devuelve 1. Para valores mayores de n, la función se llama a sí misma con un argumento más pequeño (n - 1). La llamada recursiva continúa hasta que se alcanza el caso base, y luego las soluciones se combinan para obtener el resultado final. \\
+
+\noindent La recursión se utiliza comúnmente en algoritmos y estructuras de datos, y puede ser una forma elegante y poderosa de abordar ciertos problemas. Sin embargo, es importante manejarla cuidadosamente para evitar casos de recursión infinita y asegurarse de que siempre se alcance el caso base. \\
+
